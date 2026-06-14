@@ -10,8 +10,6 @@ services:
       - "3456:3456"
     env_file:
       - .env
-    volumes:
-      - ./oc-go-cc-config.json:/etc/oc-go-cc/config.json:ro
     healthcheck:
       test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3456/health"]
       interval: 30s

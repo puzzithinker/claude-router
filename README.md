@@ -70,9 +70,13 @@ All settings live in `.env` (never committed to git). Use `./scripts/env-manager
 | `GF_ADMIN_PASSWORD` | `changeme` | Grafana admin password (change this!) |
 | `PROMETHEUS_RETENTION` | `30d` | Prometheus data retention |
 
-### oc-go-cc-config.json
+### oc-go-cc config.json
 
-Custom model routing configuration. Edit this file to change which OpenCode Go models handle different Claude Code request types:
+Custom model routing configuration, baked into the Docker image. To change model mappings, edit `oc-go-cc/config.json` and rebuild:
+
+```bash
+docker compose build oc-go-cc && docker compose up -d
+```
 
 - **default**: kimi-k2.6 (general purpose)
 - **background**: qwen3.5-plus (file reads, grep, ls)
@@ -180,7 +184,7 @@ curl http://${RPI4_IP}:8080/admin/stats     # Key stats (requires auth)
 ├── docker-compose.yml              # Main orchestration
 ├── .env                            # Configuration (not in git)
 ├── .env.example                    # Template (committed)
-├── oc-go-cc-config.json            # Model routing config
+├── oc-go-cc/config.json             # Model routing config (baked into image)
 ├── prometheus/
 │   ├── prometheus.yml               # Scrape config
 │   └── alert_rules.yml              # Alerting rules
@@ -208,7 +212,7 @@ curl http://${RPI4_IP}:8080/admin/stats     # Key stats (requires auth)
 | No metrics in Grafana | Verify Prometheus targets at `http://localhost:9090/targets` |
 | Smart router /metrics 404 | Set `"enable_prometheus": true` in router config |
 | Key rotation not working | Check `curl http://${RPI4_IP}:8080/admin/stats` |
-| Wrong model used | Edit `oc-go-cc-config.json` model mappings |
+| Wrong model used | Edit `oc-go-cc/config.json` and rebuild |
 
 ## Security Notes
 

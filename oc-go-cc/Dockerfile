@@ -5,8 +5,9 @@ RUN apk add --no-cache ca-certificates tzdata wget && \
     chown -R appuser:appgroup /etc/oc-go-cc /home/appuser/.config
 
 COPY oc-go-cc_linux-amd64 /usr/local/bin/oc-go-cc
+COPY config.json /etc/oc-go-cc/config.json
 RUN chmod +x /usr/local/bin/oc-go-cc && \
-    chown appuser:appgroup /usr/local/bin/oc-go-cc
+    chown appuser:appgroup /usr/local/bin/oc-go-cc /etc/oc-go-cc/config.json
 
 USER appuser
 
