@@ -1,0 +1,65 @@
+{
+  "api_key": "${OC_GO_CC_API_KEY}",
+  "host": "${OC_GO_CC_HOST}",
+  "port": 3456,
+  "hot_reload": false,
+
+  "models": {
+    "default": {
+      "provider": "opencode-go",
+      "model_id": "kimi-k2.6",
+      "temperature": 0.7,
+      "max_tokens": 4096
+    },
+    "background": {
+      "provider": "opencode-go",
+      "model_id": "qwen3.5-plus",
+      "temperature": 0.5,
+      "max_tokens": 2048
+    },
+    "think": {
+      "provider": "opencode-go",
+      "model_id": "glm-5.1",
+      "temperature": 0.7,
+      "max_tokens": 8192
+    },
+    "long_context": {
+      "provider": "opencode-go",
+      "model_id": "minimax-m2.7",
+      "temperature": 0.7,
+      "max_tokens": 16384,
+      "context_threshold": 80000
+    },
+    "fast": {
+      "provider": "opencode-go",
+      "model_id": "qwen3.6-plus",
+      "temperature": 0.7,
+      "max_tokens": 4096
+    }
+  },
+
+  "fallbacks": {
+    "default": [
+      { "provider": "opencode-go", "model_id": "glm-5" }
+    ],
+    "think": [
+      { "provider": "opencode-go", "model_id": "glm-5" }
+    ],
+    "long_context": [
+      { "provider": "opencode-go", "model_id": "minimax-m2.5" }
+    ]
+  },
+
+  "model_overrides": {
+    "claude-sonnet-4.5": {
+      "provider": "opencode-zen",
+      "model_id": "claude-sonnet-4.5",
+      "vision": true
+    }
+  },
+
+  "opencode_go": {
+    "base_url": "http://192.168.50.150:8080/v1/chat/completions",
+    "timeout_ms": 300000
+  }
+}

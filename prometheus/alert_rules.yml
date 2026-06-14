@@ -1,0 +1,66 @@
+groups:
+  # ─── opencode-smart-router alerts ─────────────────────────────────
+  - name: opencode-router
+    rules:
+      - alert: AllKeysDown
+        expr: sum(opencode_router_key_healthy) == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "All API keys are down"
+          description: "No healthy keys available on the smart-router. Requests cannot be forwarded."
+
+      - alert: HighErrorRate
+        expr: |
+          sum(rate(opencode_router_requests_total{status_group=~"4xx|5xx"}[5m]))
+          /
+          sum(rate(opencode_router_requests_total[5m]))
+          > 0.1
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Error rate above 10%"
+          description: "More than 10% of smart-router requests are returning 4xx or 5xx errors."
+
+      - alert: KeyDisabled
+        expr: opencode_router_key_healthy == 0
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Key {{ $labels.key }} is disabled or in cooldown"
+          description: "The key has been unhealthy for more than 5 minutes."
+
+      - alert: HighLatency
+        expr: |
+          histogram_quantile(0.95, sum(rate(opencode_router_request_duration_seconds_bucket[5m])) by (le))
+          > 5
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "P95 latency above 5 seconds"
+          description: "95th percentile request latency through the smart-router is above 5 seconds."
+
+  # ─── oc-go-cc alerts ──────────────────────────────────────────────
+  - name: oc-go-cc
+    rules:
+      - alert: OCGoCCDown
+        expr: up{job="oc-go-cc"} == 0
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "oc-go-cc is down"
+          description: "The format translator proxy has been unreachable for more than 2 minutes."
+
+      - alert: SmartRouterUnreachable
+        expr: up{job="rpi4-opencode-router"} == 0
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "opencode-smart-router on RPi4 is unreachable"
+          description: "Prometheus cannot scrape metrics from the smart-router. Check RPi4 connectivity."

@@ -1,0 +1,55 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+  external_labels:
+    monitor: "claude-router"
+
+rule_files:
+  - "alert_rules.yml"
+
+scrape_configs:
+  # ─── Prometheus self-monitoring ─────────────────────────────────────
+  - job_name: "prometheus"
+    static_configs:
+      - targets: ["localhost:9090"]
+
+  # ─── oc-go-cc format translator ────────────────────────────────────
+  - job_name: "oc-go-cc"
+    scrape_interval: 30s
+    static_configs:
+      - targets: ["oc-go-cc:3456"]
+        labels:
+          service: "oc-go-cc"
+          role: "format-translator"
+
+  # ─── Ubuntu host system metrics ─────────────────────────────────────
+  - job_name: "node-exporter"
+    scrape_interval: 15s
+    static_configs:
+      - targets: ["node-exporter:9100"]
+        labels:
+          host: "ubuntu"
+
+  # ─── Docker container metrics ───────────────────────────────────────
+  - job_name: "cadvisor"
+    scrape_interval: 15s
+    static_configs:
+      - targets: ["cadvisor:8080"]
+    metric_relabel_configs:
+      - source_labels: [__name__]
+        regex: "container_fs_(reads|writes)_(bytes|completed)_total"
+        action: drop
+      - source_labels: [container_label_com_docker_compose_service]
+        target_label: compose_service
+
+  # ─── Raspberry Pi 4: opencode-smart-router ─────────────────────────
+  # Replace RPI4_IP with your actual Raspberry Pi IP address.
+  # Requires enable_prometheus: true in the router's config.json.
+  - job_name: "rpi4-opencode-router"
+    scrape_interval: 15s
+    static_configs:
+      - targets: ["192.168.50.150:8080"]
+        labels:
+          host: "rpi4"
+          service: "opencode-smart-router"
+          role: "key-router"
