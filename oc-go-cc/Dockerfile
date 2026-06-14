@@ -1,8 +1,8 @@
 FROM alpine:3.21
 RUN apk add --no-cache ca-certificates tzdata wget && \
-    addgroup -S appgroup && adduser -S appuser -G appgroup && \
-    mkdir -p /etc/oc-go-cc && \
-    chown -R appuser:appgroup /etc/oc-go-cc
+    addgroup -S appgroup && adduser -S appuser -G appgroup -h /home/appuser && \
+    mkdir -p /etc/oc-go-cc /home/appuser/.config/oc-go-cc && \
+    chown -R appuser:appgroup /etc/oc-go-cc /home/appuser/.config
 
 COPY oc-go-cc_linux-amd64 /usr/local/bin/oc-go-cc
 RUN chmod +x /usr/local/bin/oc-go-cc && \
