@@ -3,5 +3,5 @@
 bin/
 grafana_data/
 prometheus_data/
-oc-go-cc/
 .omo/
+oc-go-cc/oc-go-cc_linux-amd64

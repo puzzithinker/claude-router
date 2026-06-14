@@ -55,16 +55,20 @@ echo "  curl:       OK"
 
 # ─── Clone oc-go-cc ──────────────────────────────────────────────────
 OC_GO_CC_DIR="${SCRIPT_DIR}/oc-go-cc"
+OC_GO_CC_VERSION="v0.3.0"
+OC_GO_CC_BINARY="${OC_GO_CC_DIR}/oc-go-cc_linux-amd64"
 
-if [ ! -d "$OC_GO_CC_DIR" ]; then
+if [ ! -f "$OC_GO_CC_BINARY" ]; then
     echo ""
-    echo "  Cloning oc-go-cc repository..."
-    git clone https://github.com/samueltuyizere/oc-go-cc.git "$OC_GO_CC_DIR"
-    echo "  ✅ Cloned to ${OC_GO_CC_DIR}"
+    echo "  Downloading oc-go-cc ${OC_GO_CC_VERSION} for linux-amd64..."
+    mkdir -p "$OC_GO_CC_DIR"
+    curl -sfL "https://github.com/samueltuyizere/oc-go-cc/releases/download/${OC_GO_CC_VERSION}/oc-go-cc_linux-amd64" \
+        -o "$OC_GO_CC_BINARY"
+    chmod +x "$OC_GO_CC_BINARY"
+    echo "  ✅ Downloaded to ${OC_GO_CC_BINARY}"
 else
     echo ""
-    echo "  oc-go-cc repository already exists, pulling latest..."
-    git -C "$OC_GO_CC_DIR" pull || true
+    echo "  oc-go-cc binary already exists, skipping download."
 fi
 
 # ─── [2/8] Configuration ─────────────────────────────────────────────
@@ -407,10 +411,10 @@ fi
 
 # ─── [6/8] Build & start ──────────────────────────────────────────────
 echo ""
-echo "[6/8] Building oc-go-cc and pulling images..."
+echo "[6/8] Building oc-go-cc container and pulling images..."
 
 docker compose build oc-go-cc 2>&1 | tail -5
-docker compose pull 2>&1 | tail -5
+docker compose pull --ignore-buildable 2>&1 | tail -5
 
 echo ""
 echo "[7/8] Starting services..."

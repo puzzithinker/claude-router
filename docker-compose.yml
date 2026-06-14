@@ -3,7 +3,6 @@ services:
   oc-go-cc:
     build:
       context: ./oc-go-cc
-      dockerfile: Dockerfile
     image: oc-go-cc:local
     container_name: oc-go-cc
     restart: unless-stopped
