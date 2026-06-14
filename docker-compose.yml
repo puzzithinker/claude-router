@@ -1,9 +1,10 @@
-version: "3.8"
-
 services:
   # ─── Format translator: Anthropic → OpenAI ───────────────────────────
   oc-go-cc:
-    image: ghcr.io/samueltuyizere/oc-go-cc:latest
+    build:
+      context: ./oc-go-cc
+      dockerfile: Dockerfile
+    image: oc-go-cc:local
     container_name: oc-go-cc
     restart: unless-stopped
     ports:

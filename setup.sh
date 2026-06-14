@@ -53,6 +53,20 @@ echo "  Docker:     OK"
 echo "  Compose:    OK"
 echo "  curl:       OK"
 
+# ─── Clone oc-go-cc ──────────────────────────────────────────────────
+OC_GO_CC_DIR="${SCRIPT_DIR}/oc-go-cc"
+
+if [ ! -d "$OC_GO_CC_DIR" ]; then
+    echo ""
+    echo "  Cloning oc-go-cc repository..."
+    git clone https://github.com/samueltuyizere/oc-go-cc.git "$OC_GO_CC_DIR"
+    echo "  ✅ Cloned to ${OC_GO_CC_DIR}"
+else
+    echo ""
+    echo "  oc-go-cc repository already exists, pulling latest..."
+    git -C "$OC_GO_CC_DIR" pull || true
+fi
+
 # ─── [2/8] Configuration ─────────────────────────────────────────────
 echo ""
 echo "[2/8] Setting up configuration..."
@@ -393,9 +407,10 @@ fi
 
 # ─── [6/8] Build & start ──────────────────────────────────────────────
 echo ""
-echo "[6/8] Pulling Docker images..."
+echo "[6/8] Building oc-go-cc and pulling images..."
 
-docker compose pull 2>&1 | tail -3
+docker compose build oc-go-cc 2>&1 | tail -5
+docker compose pull 2>&1 | tail -5
 
 echo ""
 echo "[7/8] Starting services..."

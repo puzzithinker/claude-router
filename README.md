@@ -9,7 +9,7 @@ Claude Code (Ubuntu)
   │  ANTHROPIC_BASE_URL=http://127.0.0.1:3456
   │  ANTHROPIC_API_KEY=dummy
   ▼
-oc-go-cc (Docker, port 3456)
+oc-go-cc (Docker, built from source, port 3456)
   │  Translates Anthropic API → OpenAI Chat Completions format
   │  OC_GO_CC_OPENCODE_URL=http://<RPI4_IP>:8080/v1
   ▼
@@ -24,6 +24,7 @@ OpenCode Go API
 ## Prerequisites
 
 - Docker Compose v2 on Ubuntu
+- Git (to clone oc-go-cc for building)
 - Raspberry Pi 4 running [opencode-smart-router](https://github.com/puzzithinker/opencode-smart-router) on port 8080
 - Network connectivity between Ubuntu and RPi 4 (same LAN)
 
