@@ -6,7 +6,7 @@
 
   "opencode_go": {
     "base_url": "http://192.168.50.150:8080/v1/chat/completions",
-    "anthropic_base_url": "http://192.168.50.150:8080/v1/messages",
+    "anthropic_base_url": "http://192.168.50.150:8080/v1/chat/completions",
     "timeout_ms": 300000
   },
 
@@ -81,15 +81,15 @@
   "model_overrides": {
     "claude-opus-4-8": {
       "provider": "opencode-go",
-      "model_id": "glm-5.1"
+      "model_id": "kimi-k2.7-code"
     },
     "claude-opus-4-7": {
       "provider": "opencode-go",
-      "model_id": "glm-5.1"
+      "model_id": "kimi-k2.7-code"
     },
     "claude-opus-4-6": {
       "provider": "opencode-go",
-      "model_id": "glm-5.1"
+      "model_id": "kimi-k2.7-code"
     },
     "claude-opus-4-5": {
       "provider": "opencode-go",
@@ -112,6 +112,10 @@
       "model_id": "kimi-k2.6"
     },
     "claude-haiku-4-5": {
+      "provider": "opencode-go",
+      "model_id": "qwen3.6-plus"
+    },
+    "claude-haiku-4-5-20251001": {
       "provider": "opencode-go",
       "model_id": "qwen3.6-plus"
     },
